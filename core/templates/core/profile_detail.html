@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">{{ profile.user.username }}'s Profile</h2>
+
+  <div class="card mx-auto" style="max-width: 500px;">
+    <div class="card-body text-center">
+
+      {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="Avatar" class="img-thumbnail mb-3" width="150">
+      {% else %}
+        <div class="text-muted mb-3">No avatar uploaded.</div>
+      {% endif %}
+
+      <p><strong>Bio:</strong><br> {{ profile.bio|default:"(not set)" }}</p>
+      <p><strong>Birth Date:</strong><br> {{ profile.birth_date|date:"F j, Y"|default:"(not set)" }}</p>
+
+      {% if user.username == profile.user.username %}
+        <a href="{% url 'edit_profile' %}" class="btn btn-primary mt-3">Edit Profile</a>
+      {% endif %}
+      <a href="{% url 'post_list' %}" class="btn btn-secondary mt-2">Back to Posts</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
