@@ -6,7 +6,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Güvenlik ayarları
 SECRET_KEY = 'django-insecure-#-e8zb%7pa3fxxpcw*0g&$b2i9byr5vm#7(k1m@mf^gb!)^hn5'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['berke-jwoj.onrender.com']
+
 
 # Yüklü uygulamalar
 INSTALLED_APPS = [
