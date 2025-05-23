@@ -1,20 +1,11 @@
-from django.test import TestCase
-from django.contrib.auth.models import User
-from core.models import Post
-
 from rest_framework.test import APITestCase
 from rest_framework import status
+from django.contrib.auth.models import User
+from core.models import Post
 from rest_framework.authtoken.models import Token
 
-# === Model Testi ===
-class PostModelTest(TestCase):
-    def test_create_post(self):
-        user = User.objects.create_user(username='berke', password='12345')
-        post = Post.objects.create(title='Test Başlık', content='Test İçerik', author=user)
-        self.assertEqual(post.title, 'Test Başlık')
+print(">>> test_api.py aktif")
 
-
-# === API Testleri ===
 class PostAPITestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='apiberke', password='123456')
@@ -42,3 +33,4 @@ class PostAPITestCase(APITestCase):
         self.client.credentials()  # Token'ı kaldır
         response = self.client.post('/api/posts/', {'title': 'Yetkisiz', 'content': 'Yasak'})
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+

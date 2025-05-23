@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Post, Profile
 from .forms import PostForm, ProfileForm
 
+# Celery görevini içe aktar
+from .tasks import send_post_notification
+
 # Ana sayfa (opsiyonel)
 def home(request):
     return render(request, 'core/home.html')
@@ -29,6 +32,10 @@ def post_create(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
+
+            # Celery görevi tetikle
+            send_post_notification.delay(post.id)
+
             return redirect('post_list')
     else:
         form = PostForm()
@@ -86,6 +93,24 @@ def edit_profile(request):
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'core/edit_profile.html', {'form': form})
+
+
+# === API ViewSet for Posts (Django REST Framework) ===
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .serializers import PostSerializer
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all().order_by('-created_at')
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+
+
 
 
 

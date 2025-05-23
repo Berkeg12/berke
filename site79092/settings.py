@@ -6,8 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Güvenlik ayarları
 SECRET_KEY = 'django-insecure-#-e8zb%7pa3fxxpcw*0g&$b2i9byr5vm#7(k1m@mf^gb!)^hn5'
 DEBUG = True
-ALLOWED_HOSTS = ['berke-jwoj.onrender.com']
-
+ALLOWED_HOSTS = ['berke-jwoj.onrender.com', '127.0.0.1', 'localhost']
 
 # Yüklü uygulamalar
 INSTALLED_APPS = [
@@ -18,6 +17,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',  # Ana uygulama
+    'rest_framework',
+    'rest_framework.authtoken',
+
 ]
 
 # Ara katmanlar
@@ -91,5 +93,17 @@ LOGIN_URL = 'login'           # Giriş yapılmadan erişimde yönlenecek sayfa
 # E-posta gönderimi (şifre sıfırlama işlemleri için)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Geliştirme ortamı için
 DEFAULT_FROM_EMAIL = 'noreply@example.com'
+
+# === DRF Ayarları: Token Authentication ===
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ]   
+}
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
 
 

@@ -19,12 +19,21 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+# DRF Router için gerekli importlar
+from rest_framework.routers import DefaultRouter
+from core.views import PostViewSet
+
+# Router tanımı
+router = DefaultRouter()
+router.register(r'posts', PostViewSet, basename='post')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),
+    path('', include('core.urls')),             # Normal web sayfaları
+    path('api/', include(router.urls)),         # REST API uç noktaları
 ]
 
-# Medya dosyaları (avatar gibi) tarayıcıda düzgün çalışsın diye:
+# Geliştirme ortamında medya dosyalarının servis edilmesi
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
